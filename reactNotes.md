@@ -19,4 +19,5 @@ onClick={() => props.history.push('/topics')}
 location props:
 - pathName - returns the full path name
 
+## higher-order component is a function that takes a component and returns a new component.
 withRouter - highest level component, which modifies components and retruns it
