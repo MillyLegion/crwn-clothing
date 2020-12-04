@@ -23,10 +23,22 @@ class App extends React.Component {
 
   componentDidMount() {
     // onChange in firebase this will re-render
-    this.unsubscribeFromAuth = auth.onAuthStateChanged( async user => {
-      createUserProfileDocument(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        // need to console log current user inside setState, because it is asynchoronous
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser:  {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
+        });
+      } else {
+        this.setState({ currentUser: userAuth });
+      }
 
-      // console.log(user);
     }); 
   }
 
