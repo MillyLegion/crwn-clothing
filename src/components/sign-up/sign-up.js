@@ -1,4 +1,5 @@
 import React from 'react';
+// import { withRouter } from 'react-router-dom';
 
 import './sign-up.scss'
 
@@ -40,9 +41,11 @@ class SignUp extends React.Component {
         password: '',
         confirmPassword: ''
       });
+      // this.props.history.push('/');
     } catch (error) {
       console.error(error);
     }
+    
   };
 
   handleChange = event => {
