@@ -34,3 +34,9 @@ Middleware:
 Provider - component that has store
 
 connect - HOC function component which gives access to values wihout passing props
+
+window.localStorage.setItem('myItem',  JSON.strigify(passobject));
+
+const retrievedObject = window.localStorage.sgetItem('myItem');
+
+JSON.parse(retrievedObject)

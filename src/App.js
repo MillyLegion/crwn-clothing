@@ -9,6 +9,7 @@ import ShopPage from './pages/shop/ShopPage';
 import Header from './components/header/header';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up';
 import CheckoutPage from './pages/checkout/checkout';
+import CollectionPage from './pages/collection/CollectionPage';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.action';
@@ -37,7 +38,7 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.props.currentUser);
+    // console.log(this.props.currentUser);
     return (
       <div>
         <Header/>
@@ -56,6 +57,7 @@ class App extends React.Component {
             }
           />
           <Route exact path='/checkout' component={CheckoutPage} />
+          <Route exact path='/shop/:collectionId' component={CollectionPage} />
         </Switch>
       </div>
     )
