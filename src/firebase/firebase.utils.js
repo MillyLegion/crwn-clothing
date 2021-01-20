@@ -14,6 +14,7 @@ const config = {
   measurementId: "G-2QBNV1G4F2"
 };
 
+firebase.initializeApp(config);
 
 
 // asyncronous
@@ -22,7 +23,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
   
   const userRef = firestore.doc(`user/${userAuth.uid}`);  
+  // getting colection reference of all user paths
+  // const collectionRef = firestore.collection('user');
+
   const snapShot = await userRef.get();
+  // const collectionSnapshot = await collectionRef.get();
+
+  // fetching data from firestore. getting snapshot from docSnapshot object
+  // console.log({ collection: collectionSnapshot.docs.map(doc => doc.data()) });
 
   // console.log(snapShot);
   // checking whether user exist or not. if not - creates one
@@ -45,7 +53,39 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 }; 
 
-firebase.initializeApp(config);
+export const convertCollectionsSnapshot = (collections) => {
+  const transformedCollection = collections.docs.map(doc => {
+    const { title, items } = doc.data(); // getting properties
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    }
+  });
+  // 
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+}
+
+
+export const addCollectionAndDocumenets = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  // console.log('collectionRef', collectionRef);
+
+  const batch = firestore.batch();
+  // forEach like amp but doesnt return new object
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+    // console.log('newDocRef', newDocRef);
+  });
+  // Promise
+  return await batch.commit()
+}
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
